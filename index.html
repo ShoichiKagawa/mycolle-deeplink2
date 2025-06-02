@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>アプリを起動</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 50px 20px;
-    }
-    .btn {
-      font-size: 18px;
-      padding: 16px 32px;
-      background: #007aff;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 20px;
-    }
-    .note {
-      margin-top: 30px;
-      font-size: 14px;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
-  <h1>アプリを起動します</h1>
-  <a href="mycolle://app" class="btn">アプリを起動する</a>
+  <head>
+    <meta charset="utf-8" />
+    <title>アプリを起動</title>
+    <script>
+      function openApp() {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        const isAndroid = userAgent.indexOf("android") > -1;
+        const isIOS = /iphone|ipad|ipod/.test(userAgent);
 
-  <div class="note">
-    ※ アプリが起動しない場合はインストールされているかご確認ください。
-    <br>
-    iOSの方で起動しない場合は、右上の「Safariで開く」からお試しください。
-  </div>
-</body>
+        if (isAndroid) {
+          window.location.href = "mycolle://app?domain=medicalfitnessproduce.v4.pos-s.net&shop_cd=1";
+        } else if (isIOS) {
+          // iOSではmycolleスキームを直接開くとクラッシュするので、Webリンク経由にする
+          window.location.href = "https://b.g-api.net/api/mpa/introduce?domain=medicalfitnessproduce.v4.pos-s.net&id=37277666";
+        } else {
+          alert("対応していない端末です。");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>アプリを起動します</h1>
+    <button onclick="openApp()">アプリを起動する</button>
+  </body>
 </html>
