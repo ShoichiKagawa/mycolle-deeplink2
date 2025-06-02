@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>アプリを起動</title>
-    <script>
-      function openApp() {
-        const userAgent = window.navigator.userAgent.toLowerCase();
-        const isAndroid = userAgent.indexOf("android") > -1;
-        const isIOS = /iphone|ipad|ipod/.test(userAgent);
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>アプリを起動中...</title>
+  <script>
+    window.onload = function () {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isAndroid = userAgent.indexOf("android") > -1;
+      const isIOS = /iphone|ipad|ipod/.test(userAgent);
 
-        if (isAndroid) {
-          window.location.href = "mycolle://app?domain=medicalfitnessproduce.v4.pos-s.net&shop_cd=1";
-        } else if (isIOS) {
-          // iOSではmycolleスキームを直接開くとクラッシュするので、Webリンク経由にする
-          window.location.href = "https://b.g-api.net/api/mpa/introduce?domain=medicalfitnessproduce.v4.pos-s.net&id=37277666";
-        } else {
-          alert("対応していない端末です。");
-        }
+      if (isAndroid) {
+        // Android → URLスキームでアプリ起動
+        window.location.href = "mycolle://app?domain=medicalfitnessproduce.v4.pos-s.net&shop_cd=1";
+      } else if (isIOS) {
+        // iOS → Universal Link でアプリ（またはWeb）に遷移
+        window.location.href = "https://b.g-api.net/api/mpa/introduce?domain=medicalfitnessproduce.v4.pos-s.net&id=37277666";
+      } else {
+        document.body.innerHTML = "<p>この端末には対応していません。</p>";
       }
-    </script>
-  </head>
-  <body>
-    <h1>アプリを起動します</h1>
-    <button onclick="openApp()">アプリを起動する</button>
-  </body>
+    };
+  </script>
+</head>
+<body>
+  <p>アプリを起動しています...</p>
+</body>
 </html>
