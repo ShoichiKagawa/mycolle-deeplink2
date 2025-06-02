@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>MyColleを開いています...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <title>アプリを開いています...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <div id="msg" style="font-size:18px;text-align:center;padding-top:40px;"></div>
+
   <script>
-    function isAndroid() {
-      return /Android/i.test(navigator.userAgent);
-    }
+    const deeplink = "mycolle://app?domain=medicalfitnessproduce.v4.pos-s.net&shop_cd=1";
+    const iosStore = "https://apps.apple.com/jp/app/id1081691001";
+    const androidStore = "https://play.google.com/store/apps/details?id=jp.co.extlink.mycolle&hl=ja";
 
-    function isIOS() {
-      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
+    const ua = navigator.userAgent.toLowerCase();
+    const isAndroid = ua.includes("android");
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isLINE = ua.includes("line");
 
-    function isLineBrowser() {
-      return /Line/i.test(navigator.userAgent);
-    }
-
-    function openApp() {
-      const deeplink = "mycolle://app?domain=medicalfitnessproduce.v4.pos-s.net";
-      const iosStore = "https://apps.apple.com/jp/app/id1081691001";
-      const androidStore = "https://play.google.com/store/apps/details?id=jp.co.extlink.mycolle&hl=ja";
-
-      if (isAndroid()) {
-        window.location.href = deeplink;
-        setTimeout(() => {
-          window.location.href = androidStore;
-        }, 2000);
-      } else if (isIOS()) {
-        if (isLineBrowser()) {
-          // Safari にリダイレクトするためのページに移動
-          window.location.href = "https://yourusername.github.io/mycolle-deeplink/safari.html";
-        } else {
-          // Safariなどであればスキームを実行
-          const iframe = document.createElement("iframe");
-          iframe.style.display = "none";
-          iframe.src = deeplink;
-          document.body.appendChild(iframe);
-          setTimeout(() => {
-            window.location.href = iosStore;
-          }, 2000);
-        }
+    if (isAndroid) {
+      window.location = deeplink;
+      setTimeout(() => {
+        window.location = androidStore;
+      }, 2000);
+    } else if (isIOS) {
+      if (isLINE) {
+        document.getElementById("msg").innerHTML = `
+          <p>アプリを開くには、Safariでこのページを開いてください。</p>
+          <p>右上の「…」→「Safariで開く」をタップ</p>
+        `;
       } else {
-        document.body.innerHTML = "<p>スマートフォンで開いてください。</p>";
+        // Safari上ならアプリを開く
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = deeplink;
+        document.body.appendChild(iframe);
+        setTimeout(() => {
+          window.location = iosStore;
+        }, 2000);
       }
+    } else {
+      document.getElementById("msg").innerText = "スマートフォンでアクセスしてください。";
     }
   </script>
-</head>
-<body onload="openApp()">
-  <p>アプリを開いています...</p>
 </body>
 </html>
